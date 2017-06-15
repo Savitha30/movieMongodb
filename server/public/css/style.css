@@ -1,0 +1,81 @@
+body {
+    pading:25px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.navbar{
+    position:fixed;
+    width:100%;
+}
+
+.navbar-brand{
+	font-family: 'Aladin';
+	font-size:25px;
+	color:#c3c6cc;
+	text-align:center;
+	padding-left:100px;
+	padding-top:20px;
+}
+.movie{
+      font-family: 'Ubuntu';
+      font-size:40px;
+      font-weight:bold;
+      text-align:center;
+      padding-top:5%;
+      padding-bottom:30px;
+      background-color:#cccece;
+      margin-top:50px;
+  }
+  
+  .movie h2{
+      color:white;
+  }
+  
+  .movie input{
+      font-size:20px;
+  }
+  
+  .movie button{
+      font-size:20px;
+  }
+  .table-design{
+      padding-top:20px;
+      font-family: 'Pathway Gothic One';
+      font-size:20px;
+      font-weight:bold;
+      text-align:center;
+  }
+.footer{
+   padding-top:10px; 
+}
+ #t1{
+    font-family: 'Yanone Kaffeesatz'; 
+    font-size:20px;
+    color:#74c7c3;
+ }
+ #t2{
+     font-family: 'Yanone Kaffeesatz';
+     font-size:16px;
+     color:#74c7c3;
+ }
+ .footcolor{
+     text-align:center;
+     font-size:15px;
+     padding-right:30px;
+ }
+ .row2{
+     background-color:#cccece;
+     padding-top:10px;
+ }
+ .row3{
+     background: #8bc64a;
+float: left;
+overflow: hidden;
+width: 100%;
+border-top: 1px solid #c0dca2;
+padding: 25px 0 30px 0;
+ }

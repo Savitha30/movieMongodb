@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+   
+    <link href="https://fonts.googleapis.com/css?family=Aladin|Ubuntu|Pathway+Gothic+One|Yanone+Kaffeesatz" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+<nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <img src = "http://housemovie.to/img/logo.png" class="img-responsive" alt="Logo" width="200" height="500" style="float:left;">
+          <a class="navbar-brand" href="#">Your online cinema watch the best movies..........! </a>
+        </div>
+      </div>
+    </nav>
+
+            
+    <div class="movie">
+        <h2>10 Movies To Watch Before I Die</h2>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Enter name to Search Movies...!" id="movie">
+        </div>
+        <button type="button" class="btn btn-success btn-block" value="Search Movies" onclick="findMovies()">Search Movies</button>
+        <button type="button" class="btn btn-primary btn-block" value="viewFavourites" onclick="viewFavourites()">Favourites</button>
+    </div>
+
+</div>
+<div class="table-design">
+<center>
+<table id="movie" border="1">
+  <thead>
+    </thead>
+  <tbody>
+  </tbody>
+  <!--<button onclick="addFavourites(movobj)">Add as Favourites</button> -->
+</table>
+</center>
+</div>
+<div class="footer">
+    <div class="row2">
+    <center>
+					<div>
+					<img src="http://housemovie.to/img/logo_ftr.png" class="img-responsive" alt="footerimage"><br>
+					<p id="t1">© Housemovie.to, 2017 </p>
+					<p id="t2">All rights reserved</p>
+					</div>
+					</center>
+					
+         
+					<div>
+                            <p class="footcolor">
+                                <a class="foo" href="#">FAQ</a>
+								<a class="foo" href="#">TERMS OF SERVICE</a>
+								<a class="foo" href="#">CONTACTS</a>
+								<a class="foo" href="#">ABOUT US</a>
+								<a class="foo" href="#">PRIVACY</a>
+								<a class="foo" href="#">DMCA</a>
+                            </p>
+						</div>
+				
+				<center>
+				<p class="font" id="follow">Follow Us..</p>
+				<a href="#"><i class="fa fa-twitter icon" style="font-size:25px;"></i></a>
+				<a href="#"><i class="fa fa-facebook icon" style="font-size:25px;"></i></a>
+				<a href="#"><i class="fa fa-skype icon" style="font-size:25px;"></i></a>
+				<a href="#"><i class="fa fa-google-plus icon" style="font-size:25px;"></i></a>
+				<a href="#"><i class="fa fa-telegram icon" style="font-size:25px;"></i></a>
+				</center>
+				</div>
+				<div class="row3">
+				<p id="t3">Housemovie is an automatic recommendation movie network that uses a public API's for providing information
+				about films and television series. The links on the website hosted by our fans who posted on hosting sites such as Novamov,
+				Movshare, Sockshare, Nowvideo and others. We do not post on our website any movie files so in case of a dispute we can’t 
+				delete any files.
+                </p>
+				</div>
+</div>
+<script>
+    
+    var set=new Set();
+    function findMovies(){
+        $.ajax({
+           url: '/search',
+           type: 'GET',
+           data:{moviename:document.getElementById('movie').value},
+           error: function() {
+              $('#movie').html('<p>An error has occurred</p>');
+            },
+           success: function(result_obj) {
+            console.log(typeof result_obj);
+            var total = result_obj.total_results;
+            if(total>15){
+               total=15;  
+            }
+             var resultHead='<tr><th>Title</th><th>Poster</th><th>Release Date</th><th>Add to Favourites</th></tr>';
+            var resultHTML = '';
+            
+            for (var i=0;i<total;i++) {
+                var posterpath = 'http://image.tmdb.org/t/p/w185/'+result_obj.results[i].poster_path;
+                var movobj = {title:result_obj.results[i].title,poster:posterpath, releasedate:result_obj.results[i].release_date};
+                var resultobj = JSON.stringify(movobj);
+                resultHTML += '<tr>';
+                resultHTML += '<td>' + result_obj.results[i].title + '</td>';
+                resultHTML += '<td>' + '<img src=' + posterpath + '>' + '</td>';
+                resultHTML += '<td>' + result_obj.results[i].release_date + '</td>';
+               resultHTML += "<td><button type='button' class='btn btn-default btn-lg' onclick='addFavourite(event)' value='"+ resultobj +
+                    "'> Add to Favourite</button></td>";
+               resultHTML += '</tr>';
+            }
+            // Replace table’s tbody html with peopleHTML
+            $("#movie thead").html(resultHead);
+             $("#movie tbody").html(resultHTML);
+    }
+});
+}
+function addFavourite(event){
+    console.log(event.target.value);
+     $.ajax({
+           url: '/favorites',
+           type: 'POST',
+           data:{fav:event.target.value},
+           error: function() {
+              $('#movie').html('<p>An error has occurred</p>');
+            },
+           success: function(result_obj) {
+            console.log("success in fsv");
+              
+            }
+
+    
+});
+function viewFavourites(){
+   var favHead = '<tr><th>Title</th><th>Poster</th><th>Release Date</th></tr>'
+    var favHTML = '';
+   set.forEach(function(favour){
+    var favourites = JSON.parse(favour);
+                favHTML += '<tr>';
+                favHTML += '<td>' + favourites.title  + '</td>';
+                favHTML += '<td>' + '<img src=' + favourites.poster + '>' + '</td>';
+                favHTML += '<td>' + favourites.releasedate + '</td>';
+                favHTML += '</tr>';
+    });
+    $("#movie thead").html(favHead);
+    $("#movie tbody").html(favHTML);
+} 
+}
+</script>
+ </body>
+</html>
